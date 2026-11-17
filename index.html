@@ -4,11 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Googleフォームへ移動中...</title>
-  <script charset="utf-8" src="https://line-scdn.net"></script>
 </head>
 <body>
   <p style="text-align:center; margin-top:50px; font-family: sans-serif;">Googleフォームへ移動しています...</p>
 
+  <!-- 1. 先にSDKを読み込む -->
+  <script charset="utf-8" src="https://line-scdn.net"></script>
+
+  <!-- 2. ページとSDKの読み込みが完全に終わってから実行する -->
   <script>
     // ▼ 以下の4箇所をご自身の情報に書き換えてください ▼
     const LIFF_ID = "2012647962-dwFBtKUt";
@@ -17,8 +20,12 @@
     const ENTRY_NAME = "entry.1104849655";
     // ▲ 書き換えここまで ▲
 
-    async function main() {
+    window.addEventListener('load', async function() {
       try {
+        if (typeof liff === 'undefined') {
+          throw new Error("LINEのシステム(SDK)を読み込めませんでした。Wi-Fiや通信制限を確認してください。");
+        }
+
         await liff.init({ liffId: LIFF_ID });
 
         if (!liff.isLoggedIn()) {
@@ -30,16 +37,13 @@
         const userId = encodeURIComponent(profile.userId);
         const displayName = encodeURIComponent(profile.displayName);
 
-        // 事前入力パラメータを付与してGoogleフォームへ移動
         const redirectUrl = `${FORM_URL}?usp=pp_url&${ENTRY_USER_ID}=${userId}&${ENTRY_NAME}=${displayName}`;
         window.location.replace(redirectUrl);
 
       } catch (err) {
         alert("エラーが発生しました: " + err.message);
       }
-    }
-
-    main();
+    });
   </script>
 </body>
 </html>
