@@ -8,10 +8,9 @@
 <body>
   <p style="text-align:center; margin-top:50px; font-family: sans-serif;">Googleフォームへ移動しています...</p>
 
-  <!-- 1. 先にSDKを読み込む -->
-  <script charset="utf-8" src="https://line-scdn.net"></script>
-
-  <!-- 2. ページとSDKの読み込みが完全に終わってから実行する -->
+  <!-- 別の配信元(jsDelivr)からLIFF SDKを読み込む -->
+  <script src="https://jsdelivr.net"></script>
+  
   <script>
     // ▼ 以下の4箇所をご自身の情報に書き換えてください ▼
     const LIFF_ID = "2012647962-dwFBtKUt";
@@ -23,7 +22,7 @@
     window.addEventListener('load', async function() {
       try {
         if (typeof liff === 'undefined') {
-          throw new Error("LINEのシステム(SDK)を読み込めませんでした。Wi-Fiや通信制限を確認してください。");
+          throw new Error("SDKの読み込みに再度失敗しました。");
         }
 
         await liff.init({ liffId: LIFF_ID });
