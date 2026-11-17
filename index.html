@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Googleフォームへ移動中...</title>
+  <script charset="utf-8" src="https://line-scdn.net"></script>
+</head>
+<body>
+  <p style="text-align:center; margin-top:50px; font-family: sans-serif;">Googleフォームへ移動しています...</p>
+
+  <script>
+    // ▼ 以下の4箇所をご自身の情報に書き換えてください ▼
+    const LIFF_ID = "【1】発行されたLIFF ID（例: 1234567890-AbCdEfGh）";
+    const FORM_URL = "【2】Googleフォームの回答用URL（/viewform まで）";
+    const ENTRY_USER_ID = "【3】ユーザーIDを入れる質問のID（例: entry.111111111）";
+    const ENTRY_NAME = "【4】名前を入れる質問のID（例: entry.222222222）";
+    // ▲ 書き換えここまで ▲
+
+    async function main() {
+      try {
+        await liff.init({ liffId: LIFF_ID });
+
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
+
+        const profile = await liff.getProfile();
+        const userId = encodeURIComponent(profile.userId);
+        const displayName = encodeURIComponent(profile.displayName);
+
+        // 事前入力パラメータを付与してGoogleフォームへ移動
+        const redirectUrl = `${FORM_URL}?usp=pp_url&${ENTRY_USER_ID}=${userId}&${ENTRY_NAME}=${displayName}`;
+        window.location.replace(redirectUrl);
+
+      } catch (err) {
+        alert("エラーが発生しました: " + err.message);
+      }
+    }
+
+    main();
+  </script>
+</body>
+</html>
