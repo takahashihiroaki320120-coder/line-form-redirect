@@ -1,4 +1,70 @@
-html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>フォームへ移動中...</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="status">Googleフォームへ移動しています...<br>そのままお待ちください。</div>
+
+  <script>
+    const LIFF_ID = "2012691742-V9LkIQsj";
+    const FORM_DOMAIN = "https://google.com";
+    const FORM_PATH = "/forms/d/e/1FAIpQLScB8eLAGSTHuX3Qd1Nv-BIqUdOd1UkvU0CZWVW6Rl2YcaJCJA/viewform";
+    const ENTRY_USER_ID = "entry.1426180902";
+    const ENTRY_NAME = "entry.1104849655";
+
+    window.onload = function() {
+      // URL短縮を防ぐため、SDKのURLを組み立てて読み込む
+      const sdkScript = document.createElement('script');
+      sdkScript.charset = 'utf-8';
+      sdkScript.src = 'https://static.' + 'line-scdn.net' + '/liff/edge/2/sdk.js';
+
+      sdkScript.onload = async function() {
+        try {
+          await liff.init({ liffId: LIFF_ID });
+
+          if (!liff.isLoggedIn()) {
+            liff.login();
+            return;
+          }
+
+          const profile = await liff.getProfile();
+          const userId = encodeURIComponent(profile.userId);
+          const displayName = encodeURIComponent(profile.displayName);
+
+          const redirectUrl = `${FORM_DOMAIN}${FORM_PATH}?usp=pp_url&${ENTRY_USER_ID}=${userId}&${ENTRY_NAME}=${displayName}`;
+          window.location.replace(redirectUrl);
+
+        } catch (err) {
+          document.getElementById('status').innerText = "エラーが発生しました: " + err.message;
+        }
+      };
+
+      sdkScript.onerror = function() {
+        document.getElementById('status').innerText = "SDKの読み込みに失敗しました。通信環境を確認してください。";
+      };
+
+      document.head.appendChild(sdkScript);
+    };
+  </script>
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
