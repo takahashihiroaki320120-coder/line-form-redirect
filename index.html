@@ -48,7 +48,8 @@
           const userId = encodeURIComponent(profile.userId);
           const displayName = encodeURIComponent(profile.displayName);
 
-          const redirectUrl = `${FORM_DOMAIN}${FORM_PATH}?usp=pp_url&${ENTRY_USER_ID}=${userId}&${ENTRY_NAME}=${displayName}`;
+          const redirectUrl = `${FORM_DOMAIN}${FORM_PATH}?usp=pp_url&${ENTRY_NAME}=${displayName}&${ENTRY_USER_ID}=${userId}`;
+
           window.location.replace(redirectUrl);
 
         } catch (err) {
