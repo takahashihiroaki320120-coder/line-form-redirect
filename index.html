@@ -1,28 +1,36 @@
+html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Googleフォームへ移動中3...</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>フォームへ移動中...</title>
+  <script charset="utf-8" src="https://line-scdn.net"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-  <p id="status" style="text-align:center; margin-top:50px; font-family: sans-serif;">LINEシステムを読み込み中...</p>
-  
+  <div id="status">Googleフォームへ移動しています...<br>そのままお待ちください。</div>
+
   <script>
-    // ▼ 以下の4箇所をご自身の情報に書き換えてください ▼
-    const LIFF_ID = "2012647962-dwFBtKUt";
-    const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScB8eLAGSTHuX3Qd1Nv-BIqUdOd1UkvU0CZWVW6Rl2YcaJCJA/viewform";
+    const LIFF_ID = "2012691742-V9LkIQsj";
+    const FORM_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLScB8eLAGSTHuX3Qd1Nv-BIqUdOd1UkvU0CZWVW6Rl2YcaJCJA/viewform";
     const ENTRY_USER_ID = "entry.1426180902";
     const ENTRY_NAME = "entry.1104849655";
-    
-    const statusEl = document.getElementById('status');
 
-    // SDKを動的に読み込み、成功・失敗を確実に判定する
-    const script = document.createElement('script');
-    script.src = 'https://line-scdn.net';
-    
-    script.onload = async function() {
-      statusEl.textContent = 'Googleフォームへ移動しています...';
+    window.onload = async function() {
       try {
         await liff.init({ liffId: LIFF_ID });
 
@@ -35,19 +43,13 @@
         const userId = encodeURIComponent(profile.userId);
         const displayName = encodeURIComponent(profile.displayName);
 
-        const redirectUrl = `${FORM_URL}?usp=pp_url&${ENTRY_USER_ID}=${userId}&${ENTRY_NAME}=${displayName}`;
+        const redirectUrl = `${FORM_BASE_URL}?usp=pp_url&${ENTRY_USER_ID}=${userId}&${ENTRY_NAME}=${displayName}`;
         window.location.replace(redirectUrl);
 
       } catch (err) {
-        statusEl.textContent = 'LIFF実行エラー: ' + err.message;
+        document.getElementById('status').innerText = "エラーが発生しました: " + err.message;
       }
     };
-
-    script.onerror = function() {
-      statusEl.innerHTML = '【通信ブロック検知】<br>外部スクリプト(sdk.js)の読み込みが端末またはネットワークによって遮断されました。<br>Wi-Fiをオフにするか、別のブラウザ・端末でお試しください。';
-    };
-
-    document.body.appendChild(script);
   </script>
 </body>
 </html>
