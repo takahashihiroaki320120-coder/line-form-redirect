@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>フォームへ移動中...</title>
+  <!-- タイトルを空にする -->
+  <title></title>
   <style>
     body {
       font-family: sans-serif;
@@ -20,8 +21,14 @@
   </style>
 </head>
 <body>
-  <div id="status">Googleフォームへ移動しています...<br>そのままお待ちください。</div>
+  <!-- 初期HTMLにはテキストを書かない -->
+  <div id="status"></div>
+
   <script>
+    // クローラー対策：画面開いた時だけJSでテキストとタイトルを入れる
+    document.title = "フォームへ移動中...";
+    document.getElementById('status').innerHTML = "Googleフォームへ移動しています...<br>そのままお待ちください。";
+
     const LIFF_ID = "2012691742-V9LkIQsj";
     const FORM_DOMAIN = "https://docs.google.com";
     const FORM_PATH = "/forms/d/e/1FAIpQLScB8eLAGSTHuX3Qd1Nv-BIqUdOd1UkvU0CZWVW6Rl2YcaJCJA/viewform";
@@ -29,7 +36,6 @@
     const ENTRY_NAME = "entry.1104849655";
 
     window.onload = function() {
-      // URL短縮を防ぐため、SDKのURLを組み立てて読み込む
       const sdkScript = document.createElement('script');
       sdkScript.charset = 'utf-8';
       sdkScript.src = 'https://static.' + 'line-scdn.net' + '/liff/edge/2/sdk.js';
